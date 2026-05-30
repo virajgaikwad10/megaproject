@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Traffic Violation Detection</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">AI Traffic Control</p>
+        <h1>Smart Traffic Violation Detection</h1>
+        <p class="hero-copy">Live two-wheeler tracking, helmet violation capture, and owner notification monitoring.</p>
+      </div>
+      <div class="status-pill">
+        <span class="dot"></span>
+        Production system
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="card feed-card">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Live Camera</p>
+            <h2>Processed Violation Feed</h2>
+          </div>
+          <div class="header-actions">
+            <button id="startBrowserCamera" type="button">Start Camera</button>
+            <button id="stopBrowserCamera" type="button">Stop Camera</button>
+            <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">API Docs</a>
+          </div>
+          <p id="cameraMessage" class="camera-message">Click Start Camera and allow browser access to your webcam.</p>
+        </div>
+        <canvas id="browserFrameCanvas"></canvas>
+        <div class="camera-grid">
+          <div>
+            <p class="feed-label">Camera Preview</p>
+            <div class="video-shell">
+              <video id="browserCamera" autoplay playsinline muted></video>
+            </div>
+          </div>
+          <div>
+            <p class="feed-label">AI Processed Feed</p>
+            <div class="video-shell">
+              <img src="/video-feed" alt="Live processed violation feed" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="cards-grid metrics-panel">
+        <article class="metric-card total">
+          <span>Total Violations</span>
+          <strong id="totalViolations">0</strong>
+        </article>
+        <article class="metric-card helmet">
+          <span>Helmet Violations</span>
+          <strong id="helmetViolations">0</strong>
+        </article>
+        <article class="metric-card phone">
+          <span>Phone Violations</span>
+          <strong id="phoneViolations">0</strong>
+        </article>
+        <article class="metric-card triple-seat">
+          <span>Triple Seat Violations</span>
+          <strong id="tripleSeatViolations">0</strong>
+        </article>
+        <article class="metric-card notification">
+          <span>Owner Notifications</span>
+          <strong id="notificationCount">0</strong>
+        </article>
+      </aside>
+
+      <section class="cards-grid system-panel">
+        <article class="status-card">
+          <span>Camera</span>
+          <strong id="cameraStatus">Starting</strong>
+        </article>
+        <article class="status-card">
+          <span>SMS Provider</span>
+          <strong id="notificationProvider">Twilio</strong>
+        </article>
+        <article class="status-card">
+          <span>Vehicle Model</span>
+          <strong id="vehicleModelStatus">Checking</strong>
+        </article>
+        <article class="status-card">
+          <span>Helmet Model</span>
+          <strong id="helmetModelStatus">Checking</strong>
+        </article>
+      </section>
+
+      <section class="card latest-card">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Evidence</p>
+            <h2>Latest Captured Violation</h2>
+          </div>
+          <strong id="latestNotificationStatus" class="summary-badge">None yet</strong>
+        </div>
+        <div class="latest-layout">
+          <img id="latestViolationImg" src="" alt="Latest violation evidence" />
+          <div>
+            <p class="latest-title" id="latestViolationId">No violation captured</p>
+            <p class="latest-meta" id="latestViolationMeta">Waiting for live detection.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card alerts-card">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Alerts</p>
+            <h2>Recent Violations</h2>
+          </div>
+          <div class="header-actions">
+            <a class="docs-link" href="/api/violations/export.csv">Export CSV</a>
+            <button id="refreshButton" type="button">Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Violation ID</th>
+                <th>Vehicle ID</th>
+                <th>Type</th>
+                <th>Date & Time</th>
+                <th>Notification</th>
+                <th>Image</th>
+              </tr>
+            </thead>
+            <tbody id="alertsTable">
+              <tr>
+                <td colspan="6" class="empty">Waiting for live alerts...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card owners-card">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Owner Registry</p>
+            <h2>Number Plate SMS Mapping</h2>
+          </div>
+        </div>
+        <form id="ownerForm" class="owner-form">
+          <input id="plateInput" type="text" placeholder="Plate number e.g. MH12AB1234" required />
+          <input id="ownerInput" type="text" placeholder="Owner name" required />
+          <input id="phoneInput" type="tel" placeholder="+91XXXXXXXXXX" required />
+          <button type="submit">Save Owner</button>
+        </form>
+      </section>
+    </main>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
